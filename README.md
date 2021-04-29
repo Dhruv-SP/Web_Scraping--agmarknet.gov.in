@@ -10,3 +10,13 @@ The better option is Web Scraping. through web scraping and beautiful soup, we c
 So, in this repo I'll explain how i scraped the data for all 344 commodities for date ranging from 2015 to 2021. 
 
 ---
+
+The basic technic to Web scraping is by toggling the url and sending the request to server, storing the response and then using the `BeautifulSoup` we get the html code of the site. So, to get sstarted, select any commodity and any date and click search and the url will change to
+> ###### https://agmarknet.gov.in/SearchCmmMkt.aspx?Tx_Commodity=325&Tx_State=0&Tx_District=0&Tx_Market=0&DateFrom=01-Mar-2015&DateTo=01-Apr-2015&Fr_Date=01-Mar-2015&To_Date=01-Apr-2015&Tx_Trend=0&Tx_CommodityHead=Almond(Badam)&Tx_StateHead=--Select--&Tx_DistrictHead=--Select--&Tx_MarketHead=--Select--"
+
+This is our base url, here if you try to read carefully, you will find all the values of all the attributes such as `commodity`, `state`, `district`, `market`, `date from` and `date to` and these attribute are first present with numeric value and then string value, we will need to alter the numerics only.
+
+
+**First**, In the portal, the total entries to be displayed on page are set to 50, and the `next page` button cant be handled by html request in this case,which means using webscraping we cant direct to next page and get 50-100 or so on entries. However we can set the date range so small that the number of entries are guaranteed to be less than 50. And for that I've made a list of list with size 73x2, which means 73 list containing 2 values, `date from` and `date to`, are stored in one list. the gap between `date from` to `date to` is 15 days, but you can change for yourself by togelling the `day_diff_15 = dt.timedelta(days = 15)` value. 
+
+**Second**, getting all the commodity values. Here we will use the web scraping for the first time. I've used the base url and got the response, saved as html in `soup` variable of type bs4.BeautifulSoup. Now we need to get the ieda of where the HTML code for the commodity values is located, for that we'll inspect the page by pressing the `F12` key. 
