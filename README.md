@@ -24,3 +24,12 @@ This is our base URL, here if you try to read carefully, you will find all the v
 ![](images/agmarknet.png)
 
 And there we see that the Commodity dropdown or select (in HTML) is located inside the div with class name as 'commodity'. After knowing that, we will fetch all the HTML code from the soup variable by using `findAll()` method and passing the "div" as the element to be searched and in the second argument I've passed the class value or class name and then its is stored to `lsdiv`. So now all the div with class name are stored in lsdiv as same as list, that is the first div section at index 0, the second div at index 1 and so on. After manually checking that in which index out desired `option` tags are located, which is index 1, we will search for all the option values by using `findAll()` in lsdiv[1], then iterating through all the tags and storing them as dictionary.
+
+At this point we have all the required data to start our main objective, but we need to store this data somewhere after fetching then from the website's HTML code, and I feel like the best option is Pandas DataFrame as in this we can handle the data with ease. So for the same I've created a procedure that will be called when the loop (discussed later) is starting to scrape for any particular commodity and that the procedure will returns an empty DataFrame which has the same columns as the commodity table in the portal.
+
+---
+Ok, we are all set to start Scraping.
+
+Basically there are 2 nested loops, the outer loop is to iterate through different commodities and the inner loop is to iterate through `date from` `date to` pairs. in the beginning of every outer loop, I've called the procedure to get the empty DataFrame, Then inside the inner loop, I'm fetching the table from HTML with the ID `cphBody_GridPriceData` as all the data's are inside the same table, after fetching the table, I'm searching for `tr` and then searching all `td` inside them, then cleaning the extra spaces using strip and adding to the DataFrame. Finally saving the DataFrame with the commodity name at the end of the outer loop.
+
+Other thing to keep in mind is to introduce the delay between the requests to site otherwise the server might block us as DDOS bot.
